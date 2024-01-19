@@ -1,1 +1,3 @@
-document.addEventListaner('DOMContentLoaded',funtion(){console.log("Hello,Word")});
+document.addEventListaner('DOMContentLoaded',funtion(){
+  console.log("Hello,Word")
+});
