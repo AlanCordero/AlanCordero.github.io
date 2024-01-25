@@ -1,78 +1,34 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #4caf50;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-    .warnings{
-      width: 200px;
-      text-align: center;
-      margin: auto;
-      color: red;
-      padding: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>validacion</title>
+    <link rel="stylesheet" href="estilos.css">
+   
 </head>
 <body>
+    <form action="" method="POST" id="form">
+        <div class="form">
+            <h1>Registro</h1>
+            <div class="grupo">
+                <input type="text" name="" id="name" ><span class="barra"></span>
+                <label >Nombre</label>
+            </div>
+            <div class="grupo">
+                <input type="email" name="" id="email" ><span class="barra"></span>
+                <label for="">Email</label>
+            </div>
+            <div class="grupo">
+                <input type="password" name="" id="password" ><span class="barra"></span>
+                <label for="">Password</label>
+            </div>
+            
+            <button type="submit">Validar</button>
+            <p class="warnings" id="warnings"></p>
+        </div>
+    </form>
 
-  <form action="" method="post" id="form">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="name" name="name" >
-
-    <label for="correo">Correo:</label>
-    <input type="email" id="email" name="email" >
-
-    <label for="contrasena">Contraseña:</label>
-    <input type="password" id="password" name="password" >
-
-    <button type="submit">Iniciar sesión</button>
- <P class="warnings" id="warnings">jkjk</P>
-  </form>
-<script src="Logins.js"></script>
+    <script src="validacion.js"></script>
 </body>
 </html>
