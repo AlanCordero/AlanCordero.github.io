@@ -9,7 +9,7 @@ form.addEventListener('submit', e=>{
     let warnigs=""
     let regexEmail= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     let entrar= false
-    parrafo.innerHTML=""
+    parrafo.innerHTML="asklasklas"
     if(nombre.value.lenght<5){
     warnigs += 'El nombre que ingresaste es demasiado corto'    
         entrar=true
