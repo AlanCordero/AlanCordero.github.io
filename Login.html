@@ -49,13 +49,20 @@
     button:hover {
       background-color: #45a049;
     }
+    .warnings{
+      width: 200px;
+      text-align: center;
+      margin: auto;
+      color: red;
+      padding: 20px;
+    }
   </style>
 </head>
 <body>
 
-  <form>
+  <form action="" method="post" id="form">
     <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" >
+    <input type="text" id="name" name="name" >
 
     <label for="correo">Correo:</label>
     <input type="email" id="email" name="email" >
@@ -64,6 +71,7 @@
     <input type="password" id="password" name="password" >
 
     <button type="submit">Iniciar sesión</button>
+ <P class="warnings" id="warnings"></P>
   </form>
 <script src="Logins.js"></script>
 </body>
