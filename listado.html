@@ -49,6 +49,14 @@
     </div>
     <div class="row justify-content-center my-5">
       <div class="col-12">
+        <div class="input-group mb-3">
+          <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre">
+          <button class="btn btn-primary" type="button" onclick="searchCharacter()">Buscar</button>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center my-5">
+      <div class="col-12">
         <div id="character-list-container" class="d-flex flex-wrap justify-content-around align-items-start">
           <!-- Contenedor para mostrar la lista de personajes. -->
           <!-- Los elementos de personajes se agregarán aquí dinámicamente. -->
@@ -65,28 +73,35 @@
   <script>
     // Script de JavaScript para la funcionalidad de la página.
   </script>
-</body>
 
-<script>
-  let currentIndex = 0;
-  let charactersData;
+  <script>
+    let currentIndex = 0;
+    let charactersData;
 
-  async function fetchCharacters() {
-    const response = await fetch('https://rickandmortyapi.com/api/character');
-    charactersData = await response.json();
-    // Función para obtener datos de la API de Rick and Morty.
-  }
-
-  async function showNextCharacter() {
-    if (!charactersData) {
-      await fetchCharacters();
+    async function fetchCharacters() {
+      const response = await fetch('https://rickandmortyapi.com/api/character');
+      charactersData = await response.json();
+      // Función para obtener datos de la API de Rick and Morty.
     }
 
-    const characterListContainer = document.getElementById('character-list-container');
+    async function showNextCharacter() {
+      if (!charactersData) {
+        await fetchCharacters();
+      }
 
-    if (currentIndex < charactersData.results.length) {
-      const character = charactersData.results[currentIndex];
+      const characterListContainer = document.getElementById('character-list-container');
 
+      if (currentIndex < charactersData.results.length) {
+        const character = charactersData.results[currentIndex];
+        const listItem = createCharacterCard(character);
+        characterListContainer.appendChild(listItem);
+        currentIndex++;
+      } else {
+        alert('¡Has llegado al final de la lista de personajes!');
+      }
+    }
+
+    function createCharacterCard(character) {
       const listItem = document.createElement('div');
       listItem.classList.add('character-card', 'position-relative');
 
@@ -113,16 +128,37 @@
         </div>
       `;
 
-      characterListContainer.appendChild(listItem);
-      currentIndex++;
-    } else {
-      alert('¡Has llegado al final de la lista de personajes!');
+      return listItem;
     }
-  }
 
-  function clearList() {
-    currentIndex = 0;
-    const characterListContainer = document.getElementById('character-list-container');
-    characterListContainer.innerHTML = ''; // Limpiar la lista
-  }
-</script>
+    async function searchCharacter() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase();
+      const characterListContainer = document.getElementById('character-list-container');
+      characterListContainer.innerHTML = ''; // Limpiar la lista antes de mostrar los resultados de la búsqueda
+
+      if (!charactersData) {
+        await fetchCharacters();
+      }
+
+      const filteredCharacters = charactersData.results.filter(character => character.name.toLowerCase().includes(searchInput));
+
+      if (filteredCharacters.length === 0) {
+        alert('¡No se encontraron personajes con ese nombre!');
+        return;
+      }
+
+      filteredCharacters.forEach(character => {
+        const listItem = createCharacterCard(character);
+        characterListContainer.appendChild(listItem);
+      });
+    }
+
+    function clearList() {
+      currentIndex = 0;
+      const characterListContainer = document.getElementById('character-list-container');
+      characterListContainer.innerHTML = ''; // Limpiar la lista
+    }
+  </script>
+</body>
+
+</html>
