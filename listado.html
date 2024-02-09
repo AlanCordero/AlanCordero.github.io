@@ -131,15 +131,10 @@
       return statusColor;
     }
 
- function clearList() {
-  currentIndex = 0;
-  const characterListContainer = document.getElementById('character-list-container');
-  
-  // Eliminar todos los nodos hijos del contenedor
-  while (characterListContainer.firstChild) {
-    characterListContainer.removeChild(characterListContainer.firstChild);
-  }
-}
+    async function searchCharacter() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+      const characterListContainer = document.getElementById('character-list-container');
+      clearList(); // Limpiar la lista antes de mostrar los resultados de la búsqueda
 
       if (!charactersData) {
         await fetchCharacters();
@@ -159,15 +154,14 @@
       }
     }
 
-   function clearList() {
-  currentIndex = 0;
-  const characterListContainer = document.getElementById('character-list-container');
-  
-  // Eliminar todos los nodos hijos del contenedor
-  while (characterListContainer.firstChild) {
-    characterListContainer.removeChild(characterListContainer.firstChild);
-  }
-}
+    function clearList() {
+      currentIndex = 0;
+      const characterListContainer = document.getElementById('character-list-container');
+
+      // Eliminar todos los nodos hijos del contenedor
+      while (characterListContainer.firstChild) {
+        characterListContainer.removeChild(characterListContainer.firstChild);
+      }
     }
   </script>
 </body>
