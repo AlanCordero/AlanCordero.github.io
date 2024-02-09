@@ -72,10 +72,14 @@
     let currentIndex = 0;
     let charactersData;
 
-    async function fetchCharacters() {
-      const response = await fetch('https://rickandmortyapi.com/api/character');
+    async function fetchCharacters(name = '') {
+      let url = 'https://rickandmortyapi.com/api/character';
+      if (name) {
+        url += `?name=${name}`;
+      }
+      const response = await fetch(url);
       charactersData = await response.json();
-      // Función para obtener datos de la API de Rick and Morty.
+      renderCharacters(charactersData);
     }
 
     async function showNextCharacter() {
@@ -131,26 +135,17 @@
       return statusColor;
     }
 
-    async function searchCharacter() {
-      const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+    function renderCharacters(charactersData) {
       const characterListContainer = document.getElementById('character-list-container');
       clearList(); // Limpiar la lista antes de mostrar los resultados de la búsqueda
 
-      if (!charactersData) {
-        await fetchCharacters();
-      }
-
-      let found = false;
-      charactersData.results.forEach(character => {
-        if (character.name.toLowerCase().includes(searchInput)) {
+      if (charactersData.results.length > 0) {
+        charactersData.results.forEach(character => {
           const listItem = createCharacterCard(character);
           characterListContainer.appendChild(listItem);
-          found = true;
-        }
-      });
-
-      if (!found) {
-        alert('¡No se encontraron personajes con ese nombre!');
+        });
+      } else {
+        alert('¡No se encontraron personajes!');
       }
     }
 
@@ -162,6 +157,11 @@
       while (characterListContainer.firstChild) {
         characterListContainer.removeChild(characterListContainer.firstChild);
       }
+    }
+
+    function searchCharacter() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      fetchCharacters(searchTerm);
     }
   </script>
 </body>
