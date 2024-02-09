@@ -56,11 +56,9 @@
       </div>
     </div>
     <div class="row justify-content-center my-5">
-      <div class="col-12">
-        <div id="character-list-container" class="d-flex flex-wrap justify-content-around align-items-start">
-          <!-- Contenedor para mostrar la lista de personajes. -->
-          <!-- Los elementos de personajes se agregarán aquí dinámicamente. -->
-        </div>
+      <div class="col-12" id="character-list-container">
+        <!-- Contenedor para mostrar la lista de personajes. -->
+        <!-- Los elementos de personajes se agregarán aquí dinámicamente. -->
       </div>
     </div>
   </div>
@@ -70,10 +68,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
-  <script>
-    // Script de JavaScript para la funcionalidad de la página.
-  </script>
-
   <script>
     let currentIndex = 0;
     let charactersData;
@@ -102,61 +96,78 @@
     }
 
     function createCharacterCard(character) {
-      const listItem = document.createElement('div');
-      listItem.classList.add('character-card', 'position-relative');
+      const statusColor = getStatusColor(character.status);
 
-      let statusColor = '#28a745'; // Verde por defecto (Vivo)
-      if (character.status === 'Dead') {
-        statusColor = '#dc3545'; // Rojo (Muerto)
-      } else if (character.status === 'unknown') {
-        statusColor = '#6c757d'; // Gris (Desconocido)
-      }
-
-      listItem.innerHTML = `
-        <div class="card">
-          <div class="number-badge" style="background-color: ${statusColor}">${currentIndex + 1}</div>
-          <img src="${character.image}" class="card-img-top" alt="Character Image">
-          <div class="card-body">
-            <h5 class="card-title">${character.name}</h5>
-            <p class="card-text">
-              <span class="fw-bold">Número:</span> ${currentIndex + 1}<br>
-              <span class="fw-bold">IdPersonaje:</span> ${character.id}<br>
-              <span class="fw-bold">Estado:</span> <span style="color: ${statusColor}">${character.status}</span><br>
-              <span class="fw-bold">Especie:</span> ${character.species}
-            </p>
+      const cardTemplate = `
+        <div class="character-card position-relative">
+          <div class="card">
+            <div class="number-badge" style="background-color: ${statusColor}">${currentIndex + 1}</div>
+            <img src="${character.image}" class="card-img-top" alt="Character Image">
+            <div class="card-body">
+              <h5 class="card-title">${character.name}</h5>
+              <p class="card-text">
+                <span class="fw-bold">Número:</span> ${currentIndex + 1}<br>
+                <span class="fw-bold">IdPersonaje:</span> ${character.id}<br>
+                <span class="fw-bold">Estado:</span> <span style="color: ${statusColor}">${character.status}</span><br>
+                <span class="fw-bold">Especie:</span> ${character.species}
+              </p>
+            </div>
           </div>
         </div>
       `;
 
-      return listItem;
+      const parser = new DOMParser();
+      const cardDocument = parser.parseFromString(cardTemplate, 'text/html');
+      return cardDocument.body.firstChild;
     }
 
-    async function searchCharacter() {
-      const searchInput = document.getElementById('searchInput').value.toLowerCase();
-      const characterListContainer = document.getElementById('character-list-container');
-      characterListContainer.innerHTML = ''; // Limpiar la lista antes de mostrar los resultados de la búsqueda
+    function getStatusColor(status) {
+      let statusColor = '#28a745'; // Verde por defecto (Vivo)
+      if (status === 'Dead') {
+        statusColor = '#dc3545'; // Rojo (Muerto)
+      } else if (status === 'unknown') {
+        statusColor = '#6c757d'; // Gris (Desconocido)
+      }
+      return statusColor;
+    }
+
+ function clearList() {
+  currentIndex = 0;
+  const characterListContainer = document.getElementById('character-list-container');
+  
+  // Eliminar todos los nodos hijos del contenedor
+  while (characterListContainer.firstChild) {
+    characterListContainer.removeChild(characterListContainer.firstChild);
+  }
+}
 
       if (!charactersData) {
         await fetchCharacters();
       }
 
-      const filteredCharacters = charactersData.results.filter(character => character.name.toLowerCase().includes(searchInput));
-
-      if (filteredCharacters.length === 0) {
-        alert('¡No se encontraron personajes con ese nombre!');
-        return;
-      }
-
-      filteredCharacters.forEach(character => {
-        const listItem = createCharacterCard(character);
-        characterListContainer.appendChild(listItem);
+      let found = false;
+      charactersData.results.forEach(character => {
+        if (character.name.toLowerCase().includes(searchInput)) {
+          const listItem = createCharacterCard(character);
+          characterListContainer.appendChild(listItem);
+          found = true;
+        }
       });
+
+      if (!found) {
+        alert('¡No se encontraron personajes con ese nombre!');
+      }
     }
 
-    function clearList() {
-      currentIndex = 0;
-      const characterListContainer = document.getElementById('character-list-container');
-      characterListContainer.innerHTML = ''; // Limpiar la lista
+   function clearList() {
+  currentIndex = 0;
+  const characterListContainer = document.getElementById('character-list-container');
+  
+  // Eliminar todos los nodos hijos del contenedor
+  while (characterListContainer.firstChild) {
+    characterListContainer.removeChild(characterListContainer.firstChild);
+  }
+}
     }
   </script>
 </body>
