@@ -68,6 +68,7 @@
         <div class="fw-bold" data-id="title"></div>
         <span data-id="content"></span>
       </div>
+      <img src="" alt="Character Image" class="img-fluid" data-id="image">
       <span class="badge bg-primary rounded-pill" data-id="number">14</span>
     </li>
   </template>
@@ -114,6 +115,7 @@
       clone.querySelector('[data-id="number"]').textContent = currentIndex + 1;
       clone.querySelector('[data-id="title"]').textContent = character.name;
       clone.querySelector('[data-id="content"]').textContent = `Id: ${character.id}, Status: ${character.status}`;
+      clone.querySelector('[data-id="image"]').setAttribute('src', character.image); // Establecer la URL de la imagen
 
       return clone;
     }
