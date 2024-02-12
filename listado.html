@@ -24,13 +24,10 @@
     }
 
     .number-badge {
-      position: absolute;
-      top: 0;
-      right: 0;
       background-color: #007bff;
       color: white;
+      border-radius: 50%;
       padding: 5px;
-      border-radius: 0 0 0 5px;
     }
   </style>
 </head>
@@ -58,11 +55,22 @@
     <div class="row justify-content-center my-5">
       <div class="col-12" id="character-list-container">
         <!-- Contenedor para mostrar la lista de personajes. -->
-        <!-- Los elementos de personajes se agregarán aquí dinámicamente. -->
+        <!-- Los elementos de personajes se agregarán aquí dinámicamente utilizando la plantilla 'list-template'. -->
       </div>
     </div>
   </div>
   <!-- Cierre del contenedor principal. -->
+
+  <!-- Plantilla para la lista de personajes -->
+  <template id="list-template">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold" data-id="title"></div>
+        <span data-id="content"></span>
+      </div>
+      <span class="badge bg-primary rounded-pill" data-id="number">14</span>
+    </li>
+  </template>
 
   <!-- Scripts necesarios para el funcionamiento, incluyendo Bootstrap JS. -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -91,7 +99,7 @@
 
       if (currentIndex < charactersData.results.length) {
         const character = charactersData.results[currentIndex];
-        const listItem = createCharacterCard(character);
+        const listItem = createCharacterElement(character);
         characterListContainer.appendChild(listItem);
         currentIndex++;
       } else {
@@ -99,40 +107,15 @@
       }
     }
 
-    function createCharacterCard(character) {
-      const statusColor = getStatusColor(character.status);
+    function createCharacterElement(character) {
+      const template = document.getElementById('list-template');
+      const clone = template.content.cloneNode(true);
 
-      const cardTemplate = `
-        <div class="character-card position-relative">
-          <div class="card">
-            <div class="number-badge" style="background-color: ${statusColor}">${currentIndex + 1}</div>
-            <img src="${character.image}" class="card-img-top" alt="Character Image">
-            <div class="card-body">
-              <h5 class="card-title">${character.name}</h5>
-              <p class="card-text">
-                <span class="fw-bold">Número:</span> ${currentIndex + 1}<br>
-                <span class="fw-bold">IdPersonaje:</span> ${character.id}<br>
-                <span class="fw-bold">Estado:</span> <span style="color: ${statusColor}">${character.status}</span><br>
-                <span class="fw-bold">Especie:</span> ${character.species}
-              </p>
-            </div>
-          </div>
-        </div>
-      `;
+      clone.querySelector('[data-id="number"]').textContent = currentIndex + 1;
+      clone.querySelector('[data-id="title"]').textContent = character.name;
+      clone.querySelector('[data-id="content"]').textContent = `Id: ${character.id}, Status: ${character.status}`;
 
-      const parser = new DOMParser();
-      const cardDocument = parser.parseFromString(cardTemplate, 'text/html');
-      return cardDocument.body.firstChild;
-    }
-
-    function getStatusColor(status) {
-      let statusColor = '#28a745'; // Verde por defecto (Vivo)
-      if (status === 'Dead') {
-        statusColor = '#dc3545'; // Rojo (Muerto)
-      } else if (status === 'unknown') {
-        statusColor = '#6c757d'; // Gris (Desconocido)
-      }
-      return statusColor;
+      return clone;
     }
 
     function renderCharacters(charactersData) {
@@ -141,7 +124,7 @@
 
       if (charactersData.results.length > 0) {
         charactersData.results.forEach(character => {
-          const listItem = createCharacterCard(character);
+          const listItem = createCharacterElement(character);
           characterListContainer.appendChild(listItem);
         });
       } else {
