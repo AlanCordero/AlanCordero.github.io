@@ -68,8 +68,13 @@
         <div class="fw-bold" data-id="title"></div>
         <span data-id="content"></span>
       </div>
+      <div>
+        <div class="badge bg-primary rounded-pill" data-id="number">1</div>
+        <div class="badge bg-secondary rounded-pill" data-id="id">ID: 1</div>
+        <div class="badge bg-info rounded-pill" data-id="status">Status: Alive</div>
+        <div class="badge bg-success rounded-pill" data-id="species">Species: Human</div>
+      </div>
       <img src="" alt="Character Image" class="img-fluid" data-id="image">
-      <span class="badge bg-primary rounded-pill" data-id="number">14</span>
     </li>
   </template>
 
@@ -112,10 +117,13 @@
       const template = document.getElementById('list-template');
       const clone = template.content.cloneNode(true);
 
-      clone.querySelector('[data-id="number"]').textContent = currentIndex + 1;
       clone.querySelector('[data-id="title"]').textContent = character.name;
-      clone.querySelector('[data-id="content"]').textContent = `Id: ${character.id}, Status: ${character.status}`;
-      clone.querySelector('[data-id="image"]').setAttribute('src', character.image); // Establecer la URL de la imagen
+      clone.querySelector('[data-id="content"]').textContent = `ID: ${character.id}, Status: ${character.status}, Species: ${character.species}`;
+      clone.querySelector('[data-id="number"]').textContent = currentIndex + 1;
+      clone.querySelector('[data-id="id"]').textContent = `ID: ${character.id}`;
+      clone.querySelector('[data-id="status"]').textContent = `Status: ${character.status}`;
+      clone.querySelector('[data-id="species"]').textContent = `Species: ${character.species}`;
+      clone.querySelector('[data-id="image"]').setAttribute('src', character.image);
 
       return clone;
     }
