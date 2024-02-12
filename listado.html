@@ -105,7 +105,7 @@
 
       if (currentIndex < charactersData.results.length) {
         const character = charactersData.results[currentIndex];
-        const listItem = createCharacterElement(character);
+        const listItem = createCharacterElement(character, currentIndex); // Pasar el índice actual
         characterListContainer.appendChild(listItem);
         currentIndex++;
       } else {
@@ -113,13 +113,13 @@
       }
     }
 
-    function createCharacterElement(character) {
+    function createCharacterElement(character, index) {
       const template = document.getElementById('list-template');
       const clone = template.content.cloneNode(true);
 
       clone.querySelector('[data-id="title"]').textContent = character.name;
       clone.querySelector('[data-id="content"]').textContent = `ID: ${character.id}, Status: ${character.status}, Species: ${character.species}`;
-      clone.querySelector('[data-id="number"]').textContent = currentIndex + 1;
+      clone.querySelector('[data-id="number"]').textContent = index + 1; // Establecer el número de personaje
       clone.querySelector('[data-id="id"]').textContent = `ID: ${character.id}`;
       clone.querySelector('[data-id="status"]').textContent = `Status: ${character.status}`;
       clone.querySelector('[data-id="species"]').textContent = `Species: ${character.species}`;
@@ -133,8 +133,8 @@
       clearList(); // Limpiar la lista antes de mostrar los resultados de la búsqueda
 
       if (charactersData.results.length > 0) {
-        charactersData.results.forEach(character => {
-          const listItem = createCharacterElement(character);
+        charactersData.results.forEach((character, index) => { // Utilizar el índice para establecer el número ascendente
+          const listItem = createCharacterElement(character, index);
           characterListContainer.appendChild(listItem);
         });
       } else {
